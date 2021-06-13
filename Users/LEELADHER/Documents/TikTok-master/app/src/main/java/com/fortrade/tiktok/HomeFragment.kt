@@ -50,7 +50,6 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var Upload: Button
     private lateinit var builder: AlertDialog
     private lateinit var progressDialog: ProgressDialog
-
     companion object {
         private const val TAG = "HomeFragment"
     }
@@ -266,16 +265,20 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                 val downloadUri = uriTask.result
                 if (uriTask.isSuccessful) {
                     // upload video details
-                    val hashMap = HashMap<String, Any>()
-
-                    hashMap["videoUri"] = "$downloadUri"
 //                    val uid = FirebaseAuth.getInstance().currentUser.uid
-               //     val videoData = VideoModel("$downloadUri")
+                   // val hashMap = HashMap<String, Any>()
+//                    hashMap["videoUrl"] = "$downloadUri"
+//                    hashMap["uploaderKey"] = FirebaseAuth.getInstance().currentUser.phoneNumber
+//                    hashMap["likes"] = "0"
+
+                    var number =  FirebaseAuth.getInstance().currentUser.phoneNumber.removePrefix("+91")
+//                    number.removePrefix("+91")
+                    val videoData = VideoModel("$downloadUri","","0" ,"", number)
 
 
                     val dbReference = FirebaseDatabase.getInstance().getReference("Content").child("general")
                     dbReference.child(timestamp)
-                        .setValue(hashMap)
+                        .setValue(videoData)
                         .addOnSuccessListener { taskSnapshot ->
                             progressDialog.dismiss()
 
@@ -323,13 +326,16 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 //                    val profile = user.photoUrl
                 //    val videoData = VideoModel("$downloadUri")
 
-                    val hashMap = HashMap<String, Any>()
+//                    val hashMap = HashMap<String, Any>()
+//
+//                    hashMap["videoUri"] = "$downloadUri"
 
-                    hashMap["videoUri"] = "$downloadUri"
+                    val number =  FirebaseAuth.getInstance().currentUser.phoneNumber.removePrefix("+91")
+                    val videoData = VideoModel("$downloadUri","","0" ,"","$number")
 
                     val dbReference = FirebaseDatabase.getInstance().getReference("Content").child("general")
                     dbReference.child(timestamp)
-                        .setValue(hashMap)
+                        .setValue(videoData)
                         .addOnSuccessListener { taskSnapshot ->
                             progressDialog.dismiss()
 
